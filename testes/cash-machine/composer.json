@@ -1,0 +1,17 @@
+{
+	"name": "merolhack/silex",
+	"license": "proprietary",
+	"type": "project",
+	"authors": [
+		{
+			"name": "Lenin Meza",
+			"email": "merolhack@gmail.com",
+			"homepage": "https://www.sociedadred.biz",
+			"role": "Developer"
+		}
+	],
+    "require": {
+		"php": ">=5.3.3",
+        "silex/silex": "~1.3"
+    }
+}
