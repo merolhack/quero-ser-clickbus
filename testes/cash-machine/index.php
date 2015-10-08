@@ -16,6 +16,13 @@ $content_data = array(
 		'footer' => 'Lenin Meza 2015'
 	)
 );
+$tickets = array(
+	0 => 100,
+	1 => 50,
+	2 => 20,
+	3 => 10
+);
+$total_tickets = array();
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
@@ -27,10 +34,31 @@ $app->get('/', function () use ($app, $content_data) {
 	return $app['twig']->render('layout.html.twig', $content_data);
 })->bind('homepage');
 
-$app->post('/ammount/{currency}', function ($currency) use ($app) {
+// Calculate the number of tickets
+$app->post('/ammount/{currency}', function ($currency) use ($app, $tickets, $total_tickets) {
+	$total_resto = 0;
 	$currency = floatval(trim($currency));
-	
-	return $currency;
+	foreach( $tickets as $key => $ticket ) {
+		if ( $currency >= $ticket && $total_resto == 0 ) {
+			if ( $currency == $ticket ) {
+				$first = floor( $currency / $ticket );
+				$total_tickets[] = $first." de a $".$ticket;
+				break;
+			} else {
+				$first = floor( $currency / $ticket );
+				if ( $first > 0 ) {
+					$total_tickets[] = $first." de a $".$ticket;
+					$resto = $currency % $ticket;
+					if ( $resto > 0 ) {
+						$currency = $resto;
+					} else {
+						$total_resto = 1;
+					}
+				}
+			}
+		}
+	}
+	return json_encode( $total_tickets );
 });
 
 $app->run();

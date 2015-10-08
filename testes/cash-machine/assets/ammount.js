@@ -8,8 +8,13 @@ $(document).ready(function() {
 				$.ajax({
 					url: 'ammount/'+number,
 					type: 'POST',
-					success: function ( algo ) {
-						console.log( algo );
+					success: function ( dataset ) {
+						var obj = jQuery.parseJSON( dataset );
+						$("#page_description").empty();
+						$("#page_description").append("<h2>Tome sus billetes:</h2>");
+						$.each( obj, function( key, value ) {
+							$("#page_description").append("<p>"+value+"</p>");
+						});
 					}
 				});
 			} else {
